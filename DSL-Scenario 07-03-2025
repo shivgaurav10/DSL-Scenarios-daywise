@@ -1,0 +1,13 @@
+from pyspark.sql.functions import *
+
+data = [(1, "Jhon", "Testing", 5000),
+        (2, "Tim", "Development", 6000),
+        (3, "Jhon", "Development", 5000),
+        (4, "Sky", "Prodcution", 8000)]
+df = spark.createDataFrame(data, ["id", "name", "dept", "salary"])
+df.show()
+
+print("======No duplicates======")
+no_duplicate=df.dropDuplicates(["dept"]).orderBy(["id"])
+
+no_duplicate.show()
