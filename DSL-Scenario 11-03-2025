@@ -1,0 +1,23 @@
+from pyspark.sql import *
+from pyspark.sql.types import *
+from pyspark.sql.functions import *
+
+data = [('2020-05-30','Headphone'),('2020-06-01','Pencil'),('2020-06-02','Mask'),('2020-05-30','Basketball'),('2020-06-01','Book'),('2020-06-02','Mask'),('2020-05-30','T-Shirt')]
+columns = ["sell_date",'product']
+
+df = spark.createDataFrame(data,schema=columns)
+df.show()
+
+
+result = (
+    df.dropDuplicates().groupBy("sell_date")
+    .agg(
+        collect_list("product").alias("products"),
+        count("product").alias("null_sell")
+    )
+)
+
+# final Result
+result.show()
+
+
