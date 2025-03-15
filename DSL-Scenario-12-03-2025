@@ -1,1 +1,23 @@
-DSL-
+#in this scenario we have input df food and rating.
+# we need to create df of foood along with the rating here
+#steps we followed is to join the two DF and then using expr we have put Star as per the ratings.
+#finaldf = joindf.withColumn("stats(out of 5)", expr("repeat('*',rating)"))
+
+
+from pyspark.sql.functions import *
+
+data = [(1,"Veg Biryani"),(2,"Veg Fried Rice"),(3,"Kaju Fried Rice"),(4,"Chicken Biryani"),(5,"Chicken Dum Biryani"),(6,"Prawns Biryani"),(7,"Fish Birayani")]
+
+df1 = spark.createDataFrame(data,["food_id","food_item"])
+df1.show()
+
+ratings = [(1,5),(2,3),(3,4),(4,4),(5,5),(6,4),(7,4)]
+
+df2 = spark.createDataFrame(ratings,["food_id","rating"])
+df2.show()
+
+joindf = df1.join(df2 , "food_id")
+
+finaldf = joindf.withColumn("stats(out of 5)", expr("repeat('*',rating)"))
+
+finaldf.show()
